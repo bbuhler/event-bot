@@ -1,0 +1,57 @@
+{
+  "start": "Hello ${name}!\nI am ${botInfo.first_name}. In this chat you can create new events with the command /create and share them in other chats or groups by typing @${botInfo.username}. Chat participants can then state that they would like to participate in your event.",
+  "create":
+  {
+    "button": "Create event",
+    "date":
+    {
+      "question": "When will the event take place? <i>(year, month, day)</i>",
+      "reply": "All right on ${date}"
+    },
+    "description":
+    {
+      "question": "Next, please enter a description for the event:",
+      "reply": "Perfect! If you want to change the description again, just edit your message."
+    }
+  },
+  "error":
+  {
+    "event-reference": "Please send this command in response to an upcoming event message."
+  },
+  "limit":
+  {
+
+    "question": "How many participants do you want to limit the event to? (0 = no limit)",
+    "reply": "Okay, the number of participants was limited to ${limit}.",
+    "removed": "Okay, the limit has been removed."
+  },
+  "manage-participants":
+  {
+    "question": "Please send me the contact of the person you want to ${add ? 'add' : 'remove'} or mention them with \"${add ? '+' : '-'} @\" in your reply.",
+    "reply": "Done, ${name} was ${add ? 'added' : 'removed'}."
+  },
+  "reschedule":
+  {
+    "question": "When do you want to reschedule the event to? <i>(year, month, day)</i>",
+    "reply": "All right the event has been rescheduled to the ${date}."
+  },
+  "cancel":
+  {
+    "question": "Can not be undone!\n\nPlease type \"yes\" to confirm canceling the event.",
+    "reply": "Event was canceled successfully."
+  },
+  "event":
+  {
+    "participants": "Participants",
+    "participants-waiting": "Waiting list",
+    "participants-available": "<i>${limit} free places.</i>",
+    "share": "Share",
+    "canceled-prefix": "[CANCELED] ",
+    "canceled": "<i><b>Event was canceled!</b></i>"
+  },
+  "rsvp":
+  {
+    "yes": "I'm in",
+    "no": "I can't"
+  }
+}
