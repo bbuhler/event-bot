@@ -52,6 +52,7 @@
   "rsvp":
   {
     "yes": "Bin dabei",
-    "no": "Doch nicht"
+    "no": "Doch nicht",
+    "plus-one-tip": "Tipp: Drücke noch einmal für +1"
   }
 }

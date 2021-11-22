@@ -2,6 +2,7 @@ import bot from '../bot.mjs';
 import db from '../db.mjs';
 import { addParticipant, removeParticipant } from '../helpers/participants.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
+import { bulbEmoji } from '../helpers/emoji.mjs';
 
 bot.action(/rsvp:(?<eventId>.+):(?<response>[01])/, async ctx =>
 {
@@ -10,9 +11,11 @@ bot.action(/rsvp:(?<eventId>.+):(?<response>[01])/, async ctx =>
 
   const event = db.data.events.find(it => it.id === eventId);
 
+  let showTip;
+
   if (response === '1')
   {
-    addParticipant(event, from);
+    showTip = addParticipant(event, from);
   }
   else if (response === '0')
   {
@@ -27,5 +30,5 @@ bot.action(/rsvp:(?<eventId>.+):(?<response>[01])/, async ctx =>
   await db.write();
   await updateSubscribers(ctx.tg, event);
 
-  return ctx.answerCbQuery();
+  return ctx.answerCbQuery(showTip ? `${bulbEmoji} ${ctx.i18n.t('rsvp.plus-one-tip')}` : undefined);
 });

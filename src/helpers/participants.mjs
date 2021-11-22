@@ -1,7 +1,17 @@
+function findParticipant(event, user)
+{
+  const participantIndex = event.participants.findIndex(it =>
+    (user.id && it.id === user.id) || (user.username && it.username === user.username));
+
+  return {
+    participant: event.participants[participantIndex],
+    participantIndex,
+  };
+}
+
 export function addParticipant(event, user)
 {
-  const participantIndex = event.participants.findIndex(it => it.id === user.id || it.username === user.username);
-  const participant = event.participants[participantIndex];
+  const { participant } = findParticipant(event, user);
 
   if (participant)
   {
@@ -13,23 +23,24 @@ export function addParticipant(event, user)
       participant.first_name = user.first_name;
       participant.last_name = user.last_name;
     }
+
+    return false;
   }
-  else
-  {
-    event.participants.push({
-      id: user.id,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      username: user.username,
-      escort: 0,
-    });
-  }
+
+  event.participants.push({
+    id: user.id,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    username: user.username,
+    escort: 0,
+  });
+
+  return true;
 }
 
 export function removeParticipant(event, user)
 {
-  const participantIndex = event.participants.findIndex(it => it.id === user.id || it.username === user.username);
-  const participant = event.participants[participantIndex];
+  const { participant, participantIndex } = findParticipant(event, user);
 
   if (participant)
   {

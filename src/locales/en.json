@@ -52,6 +52,7 @@
   "rsvp":
   {
     "yes": "I'm in",
-    "no": "I can't"
+    "no": "I can't",
+    "plus-one-tip": "Tip: press again to add a +1"
   }
 }

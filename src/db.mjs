@@ -24,7 +24,7 @@ class EventsJSON extends JSONFile
 
   async read()
   {
-    const obj = await super.read();
+    const obj = await super.read() || { events: [] };
 
     obj.events = obj.events.map(event =>
     {
@@ -47,7 +47,6 @@ const file = process.env.DB_FILE || 'db/db.json';
 const adapter = new EventsJSON(file);
 const db = new Low(adapter);
 
-await db.read()
-db.data ||= { events: [] };
+await db.read();
 
 export default db;
