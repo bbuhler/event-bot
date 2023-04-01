@@ -5,8 +5,8 @@
     "button": "Veranstaltung erstellen",
     "date":
     {
-      "question": "Wann findet die Veranstaltung statt? <i>(Jahr, Monat, Tag)</i>",
-      "reply": "Alles klar am ${date}"
+      "question": "Wann findet die Veranstaltung statt?",
+      "reply": "Alles klar am <b>${date}</b>"
     },
     "description":
     {
@@ -32,8 +32,8 @@
   },
   "reschedule":
   {
-    "question": "Auf wann möchtest du die Veranstaltung verschieben? <i>(Jahr, Monat, Tag)</i>",
-    "reply": "Alles klar die Veranstaltung wurde auf den ${date} verschoben."
+    "question": "Auf wann möchtest du die Veranstaltung verschieben?",
+    "reply": "Alles klar die Veranstaltung wurde auf den <b>${date}</b> verschoben."
   },
   "cancel":
   {

@@ -5,8 +5,8 @@
     "button": "Create event",
     "date":
     {
-      "question": "When will the event take place? <i>(year, month, day)</i>",
-      "reply": "All right on ${date}"
+      "question": "When will the event take place?",
+      "reply": "All right on <b>${date}</b>"
     },
     "description":
     {
@@ -32,7 +32,7 @@
   },
   "reschedule":
   {
-    "question": "When do you want to reschedule the event to? <i>(year, month, day)</i>",
+    "question": "When do you want to reschedule the event to?",
     "reply": "All right the event has been rescheduled to the ${date}."
   },
   "cancel":
