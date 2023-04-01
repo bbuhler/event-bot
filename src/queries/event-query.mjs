@@ -5,9 +5,10 @@ import createEventMessage from '../helpers/message-formater.mjs';
 
 bot.on('inline_query', async (ctx) =>
 {
+  const now = Date.now();
   const events = db.data.events
-    .filter(event => event.creator.id === ctx.update.inline_query.from.id)
-    // TODO filter query
+    .filter(event => event.creator.id === ctx.update.inline_query.from.id && event.date.getTime() > now)
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
     .map(event => ({
       type: 'article',
       id: event.id,
