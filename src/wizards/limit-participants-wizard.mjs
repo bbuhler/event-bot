@@ -28,7 +28,7 @@ stage.register(new Scenes.WizardScene
       {
         event.limit = limit || undefined;
         await db.write();
-        await updateSubscribers(ctx.tg, event);
+        await updateSubscribers(ctx.telegram, event);
       }
 
       if (limit)

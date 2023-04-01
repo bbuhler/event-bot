@@ -13,7 +13,7 @@ stage.register(new Scenes.WizardScene
       const { event } = ctx.wizard.state;
 
       event.canceled = true;
-      await updateSubscribers(ctx.tg, event);
+      await updateSubscribers(ctx.telegram, event);
 
       db.data.events = db.data.events.filter(it => it.id !== event.id);
       await db.write();

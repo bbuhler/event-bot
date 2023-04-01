@@ -27,7 +27,7 @@ stage.register(new Scenes.WizardScene
 
       await db.write();
 
-      await updateSubscribers(ctx.tg, event);
+      await updateSubscribers(ctx.telegram, event);
 
       await ctx.reply(ctx.i18n.t('manage-participants.reply', { add, name: contact.first_name || contact.username }));
       return await ctx.scene.leave();

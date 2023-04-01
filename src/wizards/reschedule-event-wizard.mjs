@@ -81,7 +81,7 @@ stage.register(new Scenes.WizardScene
       event.date = newDate;
 
       await db.write();
-      await updateSubscribers(ctx.tg, event);
+      await updateSubscribers(ctx.telegram, event);
     }
 
     await ctx.reply(ctx.i18n.t('reschedule.reply', { date: newDate.toLocaleDateString(ctx.i18n.locale()) }));

@@ -28,7 +28,7 @@ bot.action(/rsvp:(?<eventId>.+):(?<response>[01])/, async ctx =>
   }
 
   await db.write();
-  await updateSubscribers(ctx.tg, event);
+  await updateSubscribers(ctx.telegram, event);
 
   return ctx.answerCbQuery(showTip ? `${bulbEmoji} ${ctx.i18n.t('rsvp.plus-one-tip')}` : undefined);
 });

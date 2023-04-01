@@ -8,5 +8,5 @@ bot.on('edited_message', async ctx =>
     it.creator.id === ctx.update.edited_message.from.id && it.description.id === ctx.update.edited_message.message_id);
   event.description.text = ctx.update.edited_message.text;
   await db.write();
-  await updateSubscribers(ctx.tg, event);
+  await updateSubscribers(ctx.telegram, event);
 });
