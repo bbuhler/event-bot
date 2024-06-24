@@ -1,5 +1,5 @@
 import { Markup } from 'telegraf';
-import { i18n } from '../bot.mjs';
+// import { i18n } from '../bot.mjs'; // TODO get from ctx
 import { thumbsDownEmoji, thumbsUpEmoji } from './emoji.mjs';
 
 export default function createReplyMarkup(event, creator = false)

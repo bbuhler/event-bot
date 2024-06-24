@@ -1,30 +1,62 @@
-import bot from './bot.mjs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { Scenes, session, Telegraf } from 'telegraf';
+import TelegrafI18n from 'telegraf-i18n';
 
-import './wizards/create-event-wizard.mjs';
-import './wizards/limit-participants-wizard.mjs';
-import './wizards/manage-participant-wizard.mjs';
-import './wizards/reschedule-event-wizard.mjs';
-import './wizards/cancel-event-wizard.mjs';
+import { add, cancel, create, limit, remove, reschedule, start } from './commands/index.mjs';
+import { development, production } from './core/index.mjs';
+import { chosenInlineResult, editedMessage, inlineQuery } from './events/index.mjs';
+import { rsvp } from './actions/index.mjs';
+import {
+  cancelEventWizard,
+  createEventWizard,
+  limitParticipantsWizard,
+  manageParticipant,
+  rescheduleEventWizard,
+} from './wizards/index.mjs';
+import Calendar from './helpers/calendar.mjs';
 
-import './commands/start-command.mjs';
-import './commands/create-command.mjs';
-import './commands/limit-command.mjs';
-import './commands/add-command.mjs';
-import './commands/remove-command.mjs';
-import './commands/reschedule-command.mjs';
-import './commands/cancel-command.mjs';
-import './commands/edited-message.mjs';
-import './queries/event-query.mjs';
-import './actions/rsvp-action.mjs';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-import cleanUpJob from './jobs/clean-up-job.mjs';
+const BOT_TOKEN = process.env.BOT_TOKEN || '';
+const ENVIRONMENT = process.env.NODE_ENV || '';
 
-bot.launch().then(() =>
-{
-  cleanUpJob.start();
-  console.log('Bot is running.');
+const bot = new Telegraf(BOT_TOKEN);
+
+const stage = new Scenes.Stage();
+const i18n = new TelegrafI18n({
+  defaultLanguage: 'en',
+  defaultLanguageOnMissing: true,
+  directory: path.resolve(__dirname, 'locales'),
 });
 
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+bot.use(session()); // TODO different storage per environment
+bot.use(i18n.middleware());
+bot.use(stage.middleware());
+
+bot.command('start', start());
+bot.command('create', create());
+bot.command('limit', limit());
+bot.command('add', add());
+bot.command('remove', remove());
+bot.command('reschedule', reschedule());
+bot.command('cancel', cancel());
+
+bot.on('edited_message', editedMessage());
+bot.on('inline_query', inlineQuery());
+bot.on('chosen_inline_result', chosenInlineResult());
+
+bot.action(/rsvp:(?<eventId>.+):(?<response>[01])/, rsvp());
+
+stage.register(createEventWizard(bot));
+stage.register(limitParticipantsWizard());
+stage.register(manageParticipant());
+stage.register(rescheduleEventWizard(bot));
+stage.register(cancelEventWizard());
+
+//prod mode (Vercel)
+export const startVercel = async (req, res) => {
+  await production(req, res, bot);
+};
+//dev mode
+ENVIRONMENT !== 'production' && development(bot);

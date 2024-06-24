@@ -1,4 +1,4 @@
-import { i18n } from '../bot.mjs';
+// import { i18n } from '../bot.mjs'; // TODO get from ctx
 import { calendarEmoji, forbiddenEmoji } from './emoji.mjs';
 
 function getParticipantName(participant)
