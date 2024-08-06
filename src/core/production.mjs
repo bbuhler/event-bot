@@ -14,11 +14,20 @@ const production = async (req, res, bot) => {
   }
 
   const getWebhookInfo = await bot.telegram.getWebhookInfo();
-  if (getWebhookInfo.url !== VERCEL_URL + '/api') {
+  if (getWebhookInfo.url !== VERCEL_URL + '/api/webhook') {
     debug(`deleting webhook ${VERCEL_URL}`);
     await bot.telegram.deleteWebhook();
-    debug(`setting webhook: ${VERCEL_URL}/api`);
-    await bot.telegram.setWebhook(`${VERCEL_URL}/api`);
+    debug(`setting webhook: ${VERCEL_URL}/api/webhook`);
+    await bot.telegram.setWebhook(`${VERCEL_URL}/api/webhook`, {
+      // secret_token: , // TODO
+      allowed_updates: [
+        'message',
+        'edited_message',
+        'inline_query',
+        'chosen_inline_result',
+        'callback_query',
+      ],
+    });
   }
 
   if (req.method === 'POST') {

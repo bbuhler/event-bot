@@ -1,14 +1,16 @@
+import * as db from '../db.mjs';
 import createReplyMarkup from './createReplyMarkup.mjs';
 import createEventMessage from './message-formater.mjs';
 
-export default async function updateSubscribers(telegram, event)
-{
+export default async function updateSubscribers(ctx, authorAndEventId) {
+  const event = await db.getEvent(authorAndEventId);
   const changes = event.subscribers.map(({ chatId, messageId, inlineMessageId }) =>
-    telegram.editMessageText(chatId, messageId, inlineMessageId, createEventMessage(event),
+    ctx.telegram.editMessageText(chatId, messageId, inlineMessageId, createEventMessage(ctx, event),
       {
-        parse_mode: 'HTML',
-        ...createReplyMarkup(event, !!chatId),
+        ...createReplyMarkup(ctx, event, messageId),
       }));
 
-  await Promise.all(changes);
+  await Promise.allSettled(changes);
+
+  return event.subscribers.find(subscriber => !!subscriber.messageId);
 }

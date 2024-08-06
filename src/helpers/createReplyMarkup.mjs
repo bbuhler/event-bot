@@ -1,26 +1,29 @@
 import { Markup } from 'telegraf';
-// import { i18n } from '../bot.mjs'; // TODO get from ctx
-import { thumbsDownEmoji, thumbsUpEmoji } from './emoji.mjs';
 
-export default function createReplyMarkup(event, creator = false)
-{
+export default function createReplyMarkup(ctx, event, creatorMessageId) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  if (event.canceled || event.date < today)
-  {
+  if (event.canceled || event.date < today) {
     return;
   }
 
-  if (creator)
-  {
+  if (creatorMessageId) {
     return Markup.inlineKeyboard([
-      [Markup.button.switchToChat(i18n.t(event.creator.language_code, 'event.share'), '')], // TODO set event.id as value, when query filter is implemented
-    ])
+      [
+        Markup.button.callback(ctx.i18n.action.add.button, `add:${event.id}:${creatorMessageId}`),
+        Markup.button.callback(ctx.i18n.action.remove.button, `remove:${event.id}:${creatorMessageId}`),
+      ],
+      [
+        Markup.button.callback(ctx.i18n.action.reschedule.button, `reschedule:${event.id}:${creatorMessageId}`),
+        Markup.button.callback(ctx.i18n.action.cancel.button, `cancel:${event.id}:${creatorMessageId}`),
+      ],
+      [Markup.button.switchToChat(ctx.i18n.action.share.button, event.id)],
+    ]);
   }
 
   return Markup.inlineKeyboard([
-    Markup.button.callback(`${thumbsUpEmoji} ${i18n.t(event.creator.language_code, 'rsvp.yes')}`, `rsvp:${event.id}:1`),
-    Markup.button.callback(`${thumbsDownEmoji} ${i18n.t(event.creator.language_code, 'rsvp.no')}`, `rsvp:${event.id}:0`),
+    Markup.button.callback(ctx.i18n.action.rsvp.participate.button, `rsvp:${event.id}:1`),
+    Markup.button.callback(ctx.i18n.action.rsvp.withdraw.button, `rsvp:${event.id}:0`),
   ]);
 }

@@ -1,36 +1,38 @@
-// import db from '../db.mjs'; // TODO db
-import { addParticipant, removeParticipant } from '../helpers/participants.mjs';
+import * as db from '../db.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
 import { bulbEmoji } from '../helpers/emoji.mjs';
 import createDebug from 'debug';
+import { getParticipantName } from '../helpers/message-formater.mjs';
 
 const debug = createDebug('bot:rsvp_action');
 
-export function rsvp() {
+export function rsvpAction() {
   return async ctx => {
-    const { eventId, response } = ctx.match.groups;
+    const { authorId, eventId, response } = ctx.match.groups;
     const { from } = ctx.update.callback_query;
+    const authorAndEventId = `${authorId}:${eventId}`;
 
-    debug(`eventId=${eventId}, response=${response}, from=${from.first_name} (${from.id})`);
+    debug(`authorId=${authorId}, eventId=${eventId}, response=${response}, from=${from.first_name} (${from.id})`);
 
-    const event = db.data.events.find(it => it.id === eventId);
-
-    let showTip;
+    let addedNewly, removedCompletely;
 
     if (response === '1') {
-      showTip = addParticipant(event, from);
+      addedNewly = await db.addEventParticipant(authorAndEventId, from);
+      debug(`added participant: ${from.first_name} (${from.id})`);
     } else if (response === '0') {
-      const done = removeParticipant(event, from);
-
-      if (!done) // not a participant
-      {
-        return ctx.answerCbQuery();
-      }
+      removedCompletely = await db.removeEventParticipant(authorAndEventId, from.id);
+      debug(`removed participant: ${from.first_name} (${from.id})`);
     }
 
-    await db.write();
-    await updateSubscribers(ctx.telegram, event);
+    const authorSubscriber = await updateSubscribers(ctx, authorAndEventId);
 
-    return ctx.answerCbQuery(showTip ? `${bulbEmoji} ${ctx.i18n.t('rsvp.plus-one-tip')}` : undefined);
+    await ctx.telegram.sendMessage(authorSubscriber.chatId, ctx.i18n.action.rsvp[addedNewly ? 'participate' : 'withdraw'].notify(getParticipantName(from), from), {
+      reply_parameters: {
+        message_id: authorSubscriber.messageId,
+        allow_sending_without_reply: false,
+      },
+    });
+
+    return ctx.answerCbQuery(addedNewly ? `${bulbEmoji} ${ctx.i18n.action.rsvp.plusOneTip}` : undefined);
   };
 }

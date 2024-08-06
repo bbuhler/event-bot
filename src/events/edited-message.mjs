@@ -1,6 +1,7 @@
-// import db from '../db.mjs'; // TODO db
+import * as db from '../db.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
 import createDebug from 'debug';
+import { getAuthorAndEventIdByDescriptionMessageId } from '../db.mjs';
 
 const debug = createDebug('bot:edited_message');
 
@@ -10,10 +11,10 @@ export function editedMessage() {
     const user = ctx.update.edited_message.from;
     debug(`User ${user.first_name} (${user.id})`);
 
-    const event = db.data.events.find(it =>
-      it.creator.id === ctx.update.edited_message.from.id && it.description.id === ctx.update.edited_message.message_id);
-    event.description.text = ctx.update.edited_message.text;
-    await db.write();
-    await updateSubscribers(ctx.telegram, event);
+    const authorAndEventId = await getAuthorAndEventIdByDescriptionMessageId(user.id, ctx.update.edited_message.message_id);
+
+    await db.updateEventDescription(authorAndEventId, ctx.update.edited_message);
+
+    await updateSubscribers(ctx, authorAndEventId);
   };
 }

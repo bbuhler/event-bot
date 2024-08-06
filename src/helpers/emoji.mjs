@@ -1,6 +1,15 @@
-export const calendarEmoji = '️📅️';
+export const calendarEmoji = '🗓️';
 export const thumbsUpEmoji = '👍';
 export const thumbsDownEmoji = '👎';
-export const warningEmoji = '⚠️'
+export const warningEmoji = '⚠️';
 export const forbiddenEmoji = '🚫';
 export const bulbEmoji = '💡️';
+export const binEmoji = '🗑️';
+export const personEmoji = '👤️';
+export const personsEmoji = '👥️';
+export const plusEmoji = '➕️';
+export const minusEmoji = '➖️';
+export const cogEmoji = '⚙️';
+export const moveHorizontalEmoji = '↔️';
+export const greenCheckEmoji = '✅️';
+export const stopEmoji = '🛑️';

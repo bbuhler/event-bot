@@ -1,23 +1,16 @@
-export default function({ contact, text, entities })
-{
-  if (contact)
-  {
-    contact.id = contact.user_id || contact.id;
-    return contact;
+export default function ({ users_shared, contact }) {
+  if (users_shared) {
+    const [{ user_id, ...user }] = users_shared.users;
+    return {
+      id: user_id,
+      ...user,
+    };
   }
 
-  const mention = entities?.find(it => it.type === 'mention' || it.type === 'text_mention');
-
-  if (mention)
-  {
-    if (mention.user)
-    {
-      return mention.user;
-    }
-    else
-    {
-      const username = text.substr(mention.offset + 1, mention.length);
-      return { username };
-    }
+  if (contact) {
+    return {
+      id: contact.user_id,
+      ...contact,
+    };
   }
 }

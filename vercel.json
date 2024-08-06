@@ -4,8 +4,8 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "api/index.ts"
+      "destination": "api/webhook/index.mjs"
     }
   ],
-  "redirects": [{ "source": "/", "destination": "/api", "permanent": false }]
+  "redirects": [{ "source": "/", "destination": "/api/webhook", "permanent": false }]
 }

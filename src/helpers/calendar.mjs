@@ -14,7 +14,7 @@ class ExtendedCalendar extends Calendar {
   getCalendar(date, locale = 'en') {
     if (locale === 'de') {
       this.setStartWeekDay(1);
-      this.setWeekDayNames(["S", "M", "D", "M", "D", "F", "S"]);
+      this.setWeekDayNames(["M", "D", "M", "D", "F", "S", "S"]);
       this.setMonthNames(["Jan", "Feb", "Mar", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]);
     } else {
       this.setStartWeekDay(0);
