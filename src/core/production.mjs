@@ -6,20 +6,21 @@ const PORT = (process.env.PORT && parseInt(process.env.PORT, 10)) || 3000;
 const VERCEL_URL = `${process.env.VERCEL_URL}`;
 
 const production = async (req, res, bot) => {
+  const webhookUrl = `https://${VERCEL_URL}/api/webhook`;
+
   debug('Bot runs in production mode');
-  debug(`setting webhook: ${VERCEL_URL}`);
 
   if (!VERCEL_URL) {
     throw new Error('VERCEL_URL is not set.');
   }
 
   const getWebhookInfo = await bot.telegram.getWebhookInfo();
-  if (getWebhookInfo.url !== VERCEL_URL + '/api/webhook') {
-    debug(`deleting webhook ${VERCEL_URL}`);
+  if (getWebhookInfo.url !== webhookUrl) {
+    debug(`deleting webhook ${getWebhookInfo.url}`);
     await bot.telegram.deleteWebhook();
-    debug(`setting webhook: ${VERCEL_URL}/api/webhook`);
-    await bot.telegram.setWebhook(`${VERCEL_URL}/api/webhook`, {
-      // secret_token: , // TODO
+    debug(`setting webhook: ${webhookUrl}`);
+    const result = await bot.telegram.setWebhook(webhookUrl, {
+      secret_token: bot.secretPathComponent(),
       allowed_updates: [
         'message',
         'edited_message',
@@ -28,6 +29,7 @@ const production = async (req, res, bot) => {
         'callback_query',
       ],
     });
+    debug(`setting webhook success=${result}`);
   }
 
   if (req.method === 'POST') {
