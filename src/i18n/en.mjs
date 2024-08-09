@@ -1,6 +1,6 @@
 import { bold, fmt, italic, mention } from 'telegraf/format';
 import {
-  calendarEmoji,
+  calendarEmoji, clockEmoji,
   forbiddenEmoji, greenCheckEmoji,
   minusEmoji,
   moveHorizontalEmoji, pencilEmoji, personEmoji, personsEmoji,
@@ -75,6 +75,9 @@ ${pencilEmoji} You can change the text & time of your event or cancel it.`.subst
     },
     reschedule: {
       button: `${moveHorizontalEmoji} Reschedule`,
+    },
+    addTime: {
+      button: `${clockEmoji} Add time`,
     },
     cancel: {
       button: `${forbiddenEmoji} Cancel`,

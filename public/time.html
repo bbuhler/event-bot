@@ -1,0 +1,19 @@
+<html>
+<head>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<input type="time" id="time">
+<script>
+  const timeInput = document.getElementById('time');
+  document.body.addEventListener('click', () => {
+    timeInput.showPicker();
+  });
+  timeInput.addEventListener('input', () => {
+    if (window.Telegram.WebApp) {
+      window.Telegram.WebApp.sendData(timeInput.value);
+    }
+  });
+</script>
+</body>
+</html>

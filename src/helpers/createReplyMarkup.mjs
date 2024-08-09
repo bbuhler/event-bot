@@ -18,6 +18,9 @@ export default function createReplyMarkup(ctx, event, creatorMessageId) {
         Markup.button.callback(ctx.i18n.action.reschedule.button, `reschedule:${event.id}:${creatorMessageId}`),
         Markup.button.callback(ctx.i18n.action.cancel.button, `cancel:${event.id}:${creatorMessageId}`),
       ],
+      [
+        Markup.button.webApp(ctx.i18n.action.addTime.button, `https://event-50wd8vayp-bens-projects-34636858.vercel.app/time.html`),
+      ],
       [Markup.button.switchToChat(ctx.i18n.action.share.button, event.id)],
     ]);
   }

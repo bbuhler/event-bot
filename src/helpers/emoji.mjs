@@ -12,3 +12,4 @@ export const moveHorizontalEmoji = '↔️';
 export const greenCheckEmoji = '✅️';
 export const stopEmoji = '🛑️';
 export const pencilEmoji = '✒️';
+export const clockEmoji = '⏰️';
