@@ -1,4 +1,6 @@
 import createDebug from 'debug';
+import { availableLocales } from '../i18n/middleware.mjs';
+import { allowedUpdates, availableCommands } from '../config.mjs';
 
 const debug = createDebug('bot:dev');
 
@@ -21,13 +23,7 @@ const production = async (req, res, bot) => {
     debug(`setting webhook: ${webhookUrl}`);
     const result = await bot.telegram.setWebhook(webhookUrl, {
       secret_token: bot.secretPathComponent(),
-      allowed_updates: [
-        'message',
-        'edited_message',
-        'inline_query',
-        'chosen_inline_result',
-        'callback_query',
-      ],
+      allowed_updates: allowedUpdates,
     });
     debug(`setting webhook success=${result}`);
   }

@@ -1,4 +1,5 @@
 import createDebug from 'debug';
+import { allowedUpdates } from '../config.mjs';
 
 const debug = createDebug('bot:dev');
 
@@ -10,15 +11,7 @@ const development = async bot => {
   await bot.telegram.deleteWebhook();
   debug(`${botInfo} starting polling`);
 
-  await bot.launch({
-    allowedUpdates:  [
-      'message',
-      'edited_message',
-      'inline_query',
-      'chosen_inline_result',
-      'callback_query',
-    ],
-  });
+  await bot.launch({ allowedUpdates: allowedUpdates });
 
   process.once('SIGINT', () => bot.stop('SIGINT'));
   process.once('SIGTERM', () => bot.stop('SIGTERM'));
