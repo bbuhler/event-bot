@@ -14,7 +14,7 @@ export default {
     shortDescription: 'Erstelle Veranstaltungen und teile sie mit anderen, die angeben können, dass sie daran teilnehmen.\n\nhttps://git.io/JCkPz'.substring(0, 120),
     description: `${calendarEmoji} Du kannst mit dem Bot Veranstaltungen erstellten und diese dann in anderen Chats und Gruppen teilen.
 
-${thumbsUpEmoji} Die Chateilnehmer können zu deinen Einladungen zu-/absagen.
+${thumbsUpEmoji} Die Chateilnehmer können zu deinen Veranstaltungen zu- oder absagen.
 
 ${personsEmoji} Du kannst die Teilnehmer verwalten.
 

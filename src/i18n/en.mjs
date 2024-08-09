@@ -15,7 +15,7 @@ export default {
     shortDescription: 'Create events and share them with others, who can state that they participate in your event.\n\nhttps://git.io/JCkPz'.substring(0, 120),
     description: `${calendarEmoji} You can create events with the bot and then share them in other chats and groups.
 
-${thumbsUpEmoji} The chat participants can accept/reject your invitations.
+${thumbsUpEmoji} The chat participants can participate or withdraw in your events.
 
 ${personsEmoji} You can manage the participants.
 
