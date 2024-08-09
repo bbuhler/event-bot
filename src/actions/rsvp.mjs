@@ -26,12 +26,14 @@ export function rsvpAction() {
 
     const authorSubscriber = await updateSubscribers(ctx, authorAndEventId);
 
-    await ctx.telegram.sendMessage(authorSubscriber.chatId, ctx.i18n.action.rsvp[addedNewly ? 'participate' : 'withdraw'].notify(getParticipantName(from), from), {
-      reply_parameters: {
-        message_id: authorSubscriber.messageId,
-        allow_sending_without_reply: false,
-      },
-    });
+    if (addedNewly || removedCompletely) {
+      await ctx.telegram.sendMessage(authorSubscriber.chatId, ctx.i18n.action.rsvp[response === '1' ? 'participate' : 'withdraw'].notify(getParticipantName(from), from), {
+        reply_parameters: {
+          message_id: authorSubscriber.messageId,
+          allow_sending_without_reply: false,
+        },
+      });
+    }
 
     return ctx.answerCbQuery(addedNewly ? `${bulbEmoji} ${ctx.i18n.action.rsvp.plusOneTip}` : undefined);
   };
