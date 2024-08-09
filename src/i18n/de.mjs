@@ -1,9 +1,8 @@
 import { bold, fmt, italic, mention } from 'telegraf/format';
 import {
-  calendarEmoji,
-  forbiddenEmoji, greenCheckEmoji,
+  calendarEmoji, forbiddenEmoji, greenCheckEmoji,
   minusEmoji,
-  moveHorizontalEmoji, personEmoji,
+  moveHorizontalEmoji, pencilEmoji, personEmoji, personsEmoji,
   plusEmoji, stopEmoji, thumbsDownEmoji,
   thumbsUpEmoji,
 } from '../helpers/emoji.mjs';
@@ -11,12 +10,28 @@ import {
 const dateFormat = date => new Date(date).toLocaleDateString('de');
 
 export default {
+  bot: {
+    shortDescription: 'Erstelle Veranstaltungen und teile sie mit anderen, die angeben können, dass sie daran teilnehmen.\n\nhttps://git.io/JCkPz'.substring(0, 120),
+    description: `${calendarEmoji} Du kannst mit dem Bot Veranstaltungen erstellten und diese dann in anderen Chats und Gruppen teilen.
+
+${thumbsUpEmoji} Die Chateilnehmer können zu deinen Einladungen zu-/absagen.
+
+${personsEmoji} Du kannst die Teilnehmer verwalten.
+
+${pencilEmoji} Du kannst den Text & Zeit deiner Veranstaltung verändern oder sie absagen.`.substring(0, 512),
+  },
   command: {
     start: {
       reply: (name, botInfo) => fmt`Hallo ${name}!\nIch bin ${botInfo.first_name}. In diesem Chat kannst du mit dem Befehl /create neue Veranstaltungen erstellen und diese dann in anderen Chats oder Gruppen wenn du @${botInfo.username} eingibst teilen. Die Chatteilnehmer können dann zu deiner Veranstaltung zu- oder absagen.`,
     },
     create: {
       description: 'Neue Veranstaltung erstellen',
+    },
+    help: {
+      description: 'Hilfe anzeigen',
+    },
+    settings: {
+      description: 'Einstellungen',
     },
   },
   wizard: {

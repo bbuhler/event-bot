@@ -3,7 +3,7 @@ import {
   calendarEmoji,
   forbiddenEmoji, greenCheckEmoji,
   minusEmoji,
-  moveHorizontalEmoji, personEmoji,
+  moveHorizontalEmoji, pencilEmoji, personEmoji, personsEmoji,
   plusEmoji, stopEmoji, thumbsDownEmoji,
   thumbsUpEmoji,
 } from '../helpers/emoji.mjs';
@@ -11,12 +11,28 @@ import {
 const dateFormat = date => new Date(date).toLocaleDateString('en');
 
 export default {
+  bot: {
+    shortDescription: 'Create events and share them with others, who can state that they participate in your event.\n\nhttps://git.io/JCkPz'.substring(0, 120),
+    description: `${calendarEmoji} You can create events with the bot and then share them in other chats and groups.
+
+${thumbsUpEmoji} The chat participants can accept/reject your invitations.
+
+${personsEmoji} You can manage the participants.
+
+${pencilEmoji} You can change the text & time of your event or cancel it.`.substring(0, 512),
+  },
   command: {
     start: {
       reply: (name, botInfo) => fmt`Hello ${name}!\nI am ${botInfo.first_name}. In this chat you can create new events with the command /create and share them in other chats or groups by typing @${botInfo.username}. Chat participants can then state that they would like to participate in your event.`,
     },
     create: {
       description: 'Create a new event',
+    },
+    help: {
+      description: 'Show help',
+    },
+    settings: {
+      description: 'Settings',
     },
   },
   wizard: {

@@ -26,12 +26,24 @@ const production = async (req, res, bot) => {
       allowed_updates: allowedUpdates,
     });
     debug(`setting webhook success=${result}`);
+
+    debug('setting my commands and descriptions');
+    await Promise.all(Object.keys(availableLocales).map(async (locale) => {
+      await bot.telegram.setMyCommands(availableCommands.map(command => ({
+        command,
+        description: availableLocales[locale].command[command].description,
+      })), {
+        language_code: locale,
+      });
+      await bot.telegram.setMyShortDescription(availableLocales[locale].bot.shortDescription, locale);
+      await bot.telegram.setMyDescription(availableLocales[locale].bot.description, locale);
+    }));
   }
 
   if (req.method === 'POST') {
     await bot.handleUpdate(req.body, res);
   } else {
-    res.status(200).json('Listening to bot events...');
+    res.status(204);
   }
   debug(`starting webhook on port: ${PORT}`);
 };

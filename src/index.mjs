@@ -1,5 +1,3 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { Scenes, session, Telegraf } from 'telegraf';
 
 import { createCommand, startCommand } from './commands/index.mjs';
@@ -20,11 +18,7 @@ import {
   rescheduleEventWizard,
 } from './wizards/index.mjs';
 import { redisSessionStore } from './db.mjs';
-import { availableLocales, i18nMiddleware } from './i18n/middleware.mjs';
-
-// TODO clean up cron endpoint
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { i18nMiddleware } from './i18n/middleware.mjs';
 
 const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ENVIRONMENT = process.env.NODE_ENV || '';
@@ -39,19 +33,10 @@ bot.use(i18nMiddleware());
 bot.use(session({ store: redisSessionStore }));
 bot.use(stage.middleware());
 
-bot.command('start', startCommand());
-bot.command('help', startCommand());
+bot.start(startCommand());
+bot.help(startCommand()); // TODO help command (maybe with video?)
+// bot.settings(); // TODO settings command
 bot.command('create', createCommand());
-
-const commands = ['create'];
-bot.settings(async () => {
-  await Promise.all(Object.keys(availableLocales).map((locale) => bot.telegram.setMyCommands(commands.map(command => ({
-    command,
-    description: availableLocales[locale].command[command].description,
-  })), {
-    language_code: locale,
-  })));
-});
 
 bot.on('edited_message', editedMessage());
 bot.on('inline_query', inlineQuery());
@@ -68,6 +53,8 @@ stage.register(addParticipantWizard());
 stage.register(removeParticipantWizard());
 stage.register(rescheduleEventWizard(bot));
 stage.register(cancelEventWizard());
+
+// TODO add Sentry
 
 //prod mode (Vercel)
 export const startVercel = async (req, res) => {
