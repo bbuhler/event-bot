@@ -1,0 +1,15 @@
+name: Initialize Webhook
+
+on:
+  deployment_status:
+
+jobs:
+  init-webhook:
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Webhook initialization
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ github.event.deployment_status.target_url }}/api/webhook
+          method: 'GET'
