@@ -2,7 +2,7 @@ import { Markup, Scenes } from 'telegraf';
 import * as db from '../db.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
 import { getParticipantName } from '../helpers/message-formater.mjs';
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 
 const debug = createDebug('bot:remove_participant_wizard');
 
@@ -37,7 +37,7 @@ export function removeParticipantWizard() {
       const { removeParticipantMessageId } = ctx.scene.session;
       const participant = JSON.parse(ctx.update.callback_query.data);
 
-      debug(`[${authorAndEventId}] Received participant to remove: %s`, participant);
+      debug(`[${authorAndEventId}] Received participant to remove: ${participant}`);
 
       if (removeParticipantMessageId) {
         await ctx.deleteMessage(removeParticipantMessageId);

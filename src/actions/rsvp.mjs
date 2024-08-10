@@ -1,8 +1,9 @@
 import * as db from '../db.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
 import { bulbEmoji } from '../helpers/emoji.mjs';
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 import { getParticipantName } from '../helpers/message-formater.mjs';
+import * as Sentry from '@sentry/node';
 
 const debug = createDebug('bot:rsvp_action');
 
@@ -12,6 +13,7 @@ export function rsvpAction() {
     const { from } = ctx.update.callback_query;
     const authorAndEventId = `${authorId}:${eventId}`;
 
+    Sentry.setContext('Event', { id: authorAndEventId });
     debug(`authorId=${authorId}, eventId=${eventId}, response=${response}, from=${from.first_name} (${from.id})`);
 
     let addedNewly, removedCompletely;

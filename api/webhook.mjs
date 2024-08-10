@@ -1,3 +1,5 @@
+import '../src/sentry.mjs';
+
 import { startVercel } from '../src/index.mjs';
 
 export default async function handle(req, res) {

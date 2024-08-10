@@ -1,6 +1,6 @@
 import * as db from '../db.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 import { getAuthorAndEventIdByDescriptionMessageId } from '../db.mjs';
 
 const debug = createDebug('bot:edited_message');

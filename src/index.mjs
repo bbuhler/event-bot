@@ -1,4 +1,7 @@
+import './sentry.mjs';
+
 import { Scenes, session, Telegraf } from 'telegraf';
+import * as Sentry from '@sentry/node';
 
 import { createCommand, startCommand } from './commands/index.mjs';
 import { development, production } from './core/index.mjs';
@@ -29,6 +32,19 @@ const bot = new Telegraf(BOT_TOKEN, {
 
 const stage = new Scenes.Stage();
 
+bot.use((ctx, next) => {
+  Sentry.getGlobalScope().setContext('Update', {
+    'Type': ctx.updateType,
+  });
+  Sentry.getGlobalScope().setContext('Chat', {
+    'Id': ctx.chat?.id,
+    'Type': ctx.chat?.type,
+    'Title': ctx.chat?.title,
+    'Username': ctx.chat?.username,
+  });
+  Sentry.getGlobalScope().setUser(ctx.from);
+  return next();
+});
 bot.use(i18nMiddleware());
 bot.use(session({ store: redisSessionStore }));
 bot.use(stage.middleware());
@@ -53,8 +69,6 @@ stage.register(addParticipantWizard());
 stage.register(removeParticipantWizard());
 stage.register(rescheduleEventWizard(bot));
 stage.register(cancelEventWizard());
-
-// TODO add Sentry
 
 //prod mode (Vercel)
 export const startVercel = async (req, res) => {

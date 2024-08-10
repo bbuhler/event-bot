@@ -1,6 +1,6 @@
 import { Redis } from '@upstash/redis';
 import { customAlphabet } from 'nanoid';
-import createDebug from 'debug';
+import createDebug from './helpers/debug.mjs';
 import { dbNamespace } from './config.mjs';
 
 export const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 6);
@@ -12,19 +12,19 @@ const redis = new Redis({
 const debug = createDebug('bot:db');
 
 const sessionPrefix = `${dbNamespace}:session:`;
-const sessionDebug = debug.extend('session', ':');
+const sessionDebug = createDebug('bot:db:session');
 export const redisSessionStore = {
   async get(key) {
     const [value] = await redis.json.get(sessionPrefix + key, '$') ?? [];
-    sessionDebug('GET key=%s value=%s', key, value);
+    sessionDebug(`GET key=${key} value=%j`, value);
     return value;
   },
   async set(key, session) {
-    sessionDebug('SET key=%s value=%s', key, session);
+    sessionDebug(`SET key=${key} value=%j`, session);
     return await redis.json.set(sessionPrefix + key, '$', session);
   },
   async delete(key) {
-    sessionDebug('DEL key=%s', key);
+    sessionDebug(`DEL key=${key}`);
     return await redis.del(sessionPrefix + key);
   },
 }

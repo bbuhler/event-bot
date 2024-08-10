@@ -3,7 +3,8 @@ import * as db from '../db.mjs';
 import createEventMessage from '../helpers/message-formater.mjs';
 import createReplyMarkup from '../helpers/createReplyMarkup.mjs';
 import Calendar from '../helpers/calendar.mjs';
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
+import * as Sentry from '@sentry/node';
 
 const debug = createDebug('bot:create_wizard');
 
@@ -11,7 +12,7 @@ export function createEventWizard(bot) {
   const calendar = new Calendar(bot);
 
   calendar.setDateListener(async (ctx, date) => {
-    debug('Received date %s', date);
+    debug(`Received date ${date}`);
 
     ctx.scene.session.date = new Date(date);
 
@@ -58,20 +59,20 @@ export function createEventWizard(bot) {
           participants: {},
         };
 
-        const debugEvent = debug.extend(event.id, ':');
+        Sentry.setContext('Event', { id: event.id });
 
-        debugEvent('Create event');
+        debug('Create event');
         await db.createUser(ctx.message.from);
         await db.createEvent(event);
 
-        debugEvent('Send event');
+        debug('Send event');
         const eventMessage = await ctx.reply(createEventMessage(ctx, event), {
           protect_content: true,
         });
 
         await ctx.telegram.editMessageReplyMarkup(eventMessage.chat.id, eventMessage.message_id, undefined, createReplyMarkup(ctx, event, eventMessage.message_id).reply_markup);
 
-        debugEvent('Add subscriber');
+        debug('Add subscriber');
         await db.addEventSubscriber(event.id, {
           chatId: eventMessage.chat.id,
           messageId: eventMessage.message_id,
@@ -85,8 +86,10 @@ export function createEventWizard(bot) {
           reply_parameters: { message_id: ctx.update.message.message_id },
         });
 
-        debugEvent('Done');
+        debug('Done');
         return await ctx.scene.leave();
+      } else {
+        Sentry.captureMessage('Unsupported message type', 'warning');
       }
     },
   );

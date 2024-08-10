@@ -1,4 +1,4 @@
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 import { allowedUpdates } from '../config.mjs';
 
 const debug = createDebug('bot:dev');

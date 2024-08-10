@@ -2,7 +2,7 @@ import { Scenes } from 'telegraf';
 import * as db from '../db.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
 import Calendar from '../helpers/calendar.mjs';
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 
 const debug = createDebug('bot:reschedule_wizard');
 
@@ -10,7 +10,7 @@ export function rescheduleEventWizard(bot) {
   const calendar = new Calendar(bot);
 
   calendar.setDateListener(async (ctx, date) => {
-    debug('Received date %s', date);
+    debug(`Received date ${date}`);
 
     ctx.scene.session.date = new Date(date);
 

@@ -1,4 +1,4 @@
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 import { availableLocales } from '../i18n/middleware.mjs';
 import { allowedUpdates, availableCommands } from '../config.mjs';
 

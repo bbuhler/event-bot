@@ -2,7 +2,7 @@ import * as db from '../db.mjs';
 import createReplyMarkup from '../helpers/createReplyMarkup.mjs';
 import createEventMessage from '../helpers/message-formater.mjs';
 import { calendarEmoji } from '../helpers/emoji.mjs';
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 
 const debug = createDebug('bot:event_query');
 
@@ -17,7 +17,7 @@ async function getEventsFromInlineQuery(inlineQuery) {
 
 export function inlineQuery() {
   return async (ctx) => {
-    debug('Query: %s', ctx.update.inline_query.query);
+    debug(`Query: ${ctx.update.inline_query.query}`);
 
     const events = (await getEventsFromInlineQuery(ctx.update.inline_query))
       .map(event => {
@@ -48,10 +48,10 @@ export function inlineQuery() {
 
 export function chosenInlineResult() {
   return async ({ update }) => {
-    debug('Chosen result: %s', update.chosen_inline_result.result_id);
+    debug(`Chosen result: ${update.chosen_inline_result.result_id}`);
     await db.addEventSubscriber(update.chosen_inline_result.result_id, {
       inlineMessageId: update.chosen_inline_result.inline_message_id,
     });
-    debug('Added inline message id: %s as subscriber to event %s', update.chosen_inline_result.inline_message_id, update.chosen_inline_result.result_id);
+    debug(`Added inline message id: ${update.chosen_inline_result.inline_message_id} as subscriber to event ${update.chosen_inline_result.result_id}`);
   };
 }

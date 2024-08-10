@@ -3,7 +3,7 @@ import getContactsFromMsg from '../helpers/getContactFromMsg.mjs';
 import * as db from '../db.mjs';
 import updateSubscribers from '../helpers/updateSubscribers.mjs';
 import { getParticipantName } from '../helpers/message-formater.mjs';
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 
 const debug = createDebug('bot:add_participant_wizard');
 

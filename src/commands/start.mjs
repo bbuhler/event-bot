@@ -1,4 +1,4 @@
-import createDebug from 'debug';
+import createDebug from '../helpers/debug.mjs';
 
 const debug = createDebug('bot:start_command');
 
