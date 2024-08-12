@@ -20,8 +20,7 @@
     "prettier": "^3.3.3"
   },
   "scripts": {
-    "dev": "DEBUG=bot* dotenv -- nodemon -e mjs src/index.mjs",
-    "devWindows": "@powershell -Command $env:DEBUG='bot*';dotenv -- -- nodemon -e mjs src/index.mjs",
+    "dev": "DEBUG=bot* BOT_DB_NAMESPACE=eventBotDev dotenv -- nodemon -e mjs src/index.mjs",
     "build": "ncc build src/index.mjs -o public -m",
     "prettier": "prettier --write 'src/**/*.mjs'"
   }
