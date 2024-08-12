@@ -12,7 +12,7 @@ export function rescheduleEventWizard(bot) {
   calendar.setDateListener(async (ctx, date) => {
     debug(`Received date ${date}`);
 
-    ctx.scene.session.date = new Date(date);
+    ctx.scene.session.date = date;
 
     // FIXME to work on first click
     ctx.wizard.next();

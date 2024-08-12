@@ -77,7 +77,7 @@ function createDescription(description) {
 }
 
 export default function createEventMessage(ctx, event) {
-  const date = event.date.toLocaleDateString(event.locale);
+  const date = new Date(event.date).toLocaleDateString(event.locale);
 
   return join([
     ctx.i18n.message.event.title(date, event.canceled),

@@ -14,7 +14,7 @@ export function createEventWizard(bot) {
   calendar.setDateListener(async (ctx, date) => {
     debug(`Received date ${date}`);
 
-    ctx.scene.session.date = new Date(date);
+    ctx.scene.session.date = date;
 
     await ctx.editMessageReplyMarkup();
     await ctx.reply(ctx.i18n.wizard.create.date.reply(ctx.scene.session.date));
@@ -48,7 +48,7 @@ export function createEventWizard(bot) {
 
         const event = {
           id: `${ctx.message.from.id}:${db.nanoid()}`,
-          date: new Date(ctx.scene.session.date),
+          date: Date.parse(ctx.scene.session.date),
           locale: ctx.message.from.language_code,
           descriptionMessageId: ctx.message.message_id,
           description: {

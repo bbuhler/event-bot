@@ -138,7 +138,7 @@ export async function updateEventDate(authorAndEventId, date) {
   const key = `${dbNamespace}:user:${authorId}`;
   const path = `$.events.${eventId}.date`;
 
-  await redis.json.set(key, path, JSON.stringify(date));
+  await redis.json.set(key, path, JSON.stringify(Date.parse(date)));
 }
 
 export async function cancelEvent(authorAndEventId) {
