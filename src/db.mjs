@@ -21,13 +21,14 @@ export const redisSessionStore = {
   },
   async set(key, session) {
     sessionDebug(`SET key=${key} value=%j`, session);
-    return await redis.json.set(sessionPrefix + key, '$', session);
+    await redis.json.set(sessionPrefix + key, '$', session);
+    await redis.expire(sessionPrefix + key, 30 * 24 * 60 * 60);
   },
   async delete(key) {
     sessionDebug(`DEL key=${key}`);
-    return await redis.del(sessionPrefix + key);
+    await redis.del(sessionPrefix + key);
   },
-}
+};
 
 export async function createUser(author) {
   const { id, ...user } = author;
