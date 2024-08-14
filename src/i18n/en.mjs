@@ -101,7 +101,7 @@ ${pencilEmoji} You can change the text & time of your event or cancel it.`.subst
   },
   message: {
     event: {
-      title: (date, canceled) => fmt`${calendarEmoji} ${bold`${canceled ? '[CANCELED] ' : ''}${date}`}`,
+      title: (date, canceled) => fmt`${calendarEmoji} ${bold`${canceled ? '[CANCELED] ' : ''}${dateFormat(date)}`}`,
       commitments: count => `Participants (${count}):`,
       participants: {
         waiting: count => `Waiting list (${count}):`,

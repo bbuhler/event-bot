@@ -1,6 +1,6 @@
 import { Scenes } from 'telegraf';
 import * as db from '../db.mjs';
-import updateSubscribers from '../helpers/updateSubscribers.mjs';
+import { updateSubscribersById } from '../helpers/updateSubscribers.mjs';
 import Calendar from '../helpers/calendar.mjs';
 import createDebug from '../helpers/debug.mjs';
 
@@ -55,7 +55,7 @@ export function rescheduleEventWizard(bot) {
         await db.updateEventDate(authorAndEventId, date);
         debug(`[${authorAndEventId}] Updated event date`);
 
-        await updateSubscribers(ctx, authorAndEventId);
+        await updateSubscribersById(ctx, authorAndEventId);
         debug(`[${authorAndEventId}] Updated subscribers`);
 
         await ctx.reply(ctx.i18n.wizard.reschedule.reply(date), {

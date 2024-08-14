@@ -18,11 +18,11 @@ function createParticipant(participant) {
   return fmt`@${participant.username}${escort}`;
 }
 
-function createParticipantsList(ctx, { participants, limit = Infinity, canceled }) {
+function createParticipantsList(i18n, { participants, limit = Infinity, canceled }) {
   const list = [];
 
   if (canceled) {
-    return ctx.i18n.message.event.canceled();
+    return i18n.message.event.canceled();
   }
 
   const attending = [];
@@ -49,14 +49,14 @@ function createParticipantsList(ctx, { participants, limit = Infinity, canceled 
   }
 
   list.push(
-    ctx.i18n.message.event.commitments(attendingCount),
+    i18n.message.event.commitments(attendingCount),
     ...attending.map(createParticipant),
   );
 
   if (waiting.length) {
     list.push(
       '',
-      ctx.i18n.message.event.participants.waiting(waitingCount),
+      i18n.message.event.participants.waiting(waitingCount),
       ...waiting.map(createParticipant),
     );
   }
@@ -66,7 +66,7 @@ function createParticipantsList(ctx, { participants, limit = Infinity, canceled 
   }
 
   if (attendingCount === 0 && limit !== Infinity) {
-    return ctx.i18n.message.event.participants.available(limit);
+    return i18n.message.event.participants.available(limit);
   }
 
   return '';
@@ -76,14 +76,12 @@ function createDescription(description) {
   return new FmtString(description.text, description.entities);
 }
 
-export default function createEventMessage(ctx, event) {
-  const date = new Date(event.date).toLocaleDateString(event.locale);
-
+export default function createEventMessage(i18n, event) {
   return join([
-    ctx.i18n.message.event.title(date, event.canceled),
+    i18n.message.event.title(event.date, event.canceled),
     '',
     createDescription(event.description),
     '',
-    createParticipantsList(ctx, event),
+    createParticipantsList(i18n, event),
   ], '\n');
 }

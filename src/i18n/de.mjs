@@ -100,7 +100,7 @@ ${pencilEmoji} Du kannst den Text & Zeit deiner Veranstaltung verändern oder si
   },
   message: {
     event: {
-      title: (date, canceled) => fmt`${calendarEmoji} ${bold`${canceled ? '[ABGESAGT] ' : ''}${date}`}`,
+      title: (date, canceled) => fmt`${calendarEmoji} ${bold`${canceled ? '[ABGESAGT] ' : ''}${dateFormat(date)}`}`,
       commitments: count => `Zusagen (${count}):`,
       participants: {
         waiting: count => `Warteliste (${count}):`,

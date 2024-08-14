@@ -66,11 +66,11 @@ export function createEventWizard(bot) {
         await db.createEvent(event);
 
         debug('Send event');
-        const eventMessage = await ctx.reply(createEventMessage(ctx, event), {
+        const eventMessage = await ctx.reply(createEventMessage(ctx.i18n, event), {
           protect_content: true,
         });
 
-        await ctx.telegram.editMessageReplyMarkup(eventMessage.chat.id, eventMessage.message_id, undefined, createReplyMarkup(ctx, event, eventMessage.message_id).reply_markup);
+        await ctx.telegram.editMessageReplyMarkup(eventMessage.chat.id, eventMessage.message_id, undefined, createReplyMarkup(ctx.i18n, event, eventMessage.message_id).reply_markup);
 
         debug('Add subscriber');
         await db.addEventSubscriber(event.id, {

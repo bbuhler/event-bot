@@ -17,5 +17,11 @@
       "destination": "https://t.me/BensEventBot",
       "permanent": false
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cleanup",
+      "schedule": "0 0 * * *"
+    }
   ]
 }

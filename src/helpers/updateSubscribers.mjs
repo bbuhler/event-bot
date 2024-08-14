@@ -1,13 +1,19 @@
 import * as db from '../db.mjs';
 import createReplyMarkup from './createReplyMarkup.mjs';
 import createEventMessage from './message-formater.mjs';
+import { availableLocales } from '../i18n/middleware.mjs';
 
-export default async function updateSubscribers(ctx, authorAndEventId) {
+export async function updateSubscribersById(ctx, authorAndEventId) {
   const event = await db.getEvent(authorAndEventId);
+  return updateSubscribers(ctx.telegram, event);
+}
+
+export async function updateSubscribers(telegram, event) {
+  const i18n = availableLocales[event.locale];
   const changes = event.subscribers.map(({ chatId, messageId, inlineMessageId }) =>
-    ctx.telegram.editMessageText(chatId, messageId, inlineMessageId, createEventMessage(ctx, event),
+    telegram.editMessageText(chatId, messageId, inlineMessageId, createEventMessage(i18n, event),
       {
-        ...createReplyMarkup(ctx, event, messageId),
+        ...createReplyMarkup(i18n, event, messageId),
       }));
 
   await Promise.allSettled(changes);

@@ -1,5 +1,5 @@
 import * as db from '../db.mjs';
-import updateSubscribers from '../helpers/updateSubscribers.mjs';
+import { updateSubscribersById } from '../helpers/updateSubscribers.mjs';
 import createDebug from '../helpers/debug.mjs';
 import { getAuthorAndEventIdByDescriptionMessageId } from '../db.mjs';
 
@@ -15,6 +15,6 @@ export function editedMessage() {
 
     await db.updateEventDescription(authorAndEventId, ctx.update.edited_message);
 
-    await updateSubscribers(ctx, authorAndEventId);
+    await updateSubscribersById(ctx, authorAndEventId);
   };
 }

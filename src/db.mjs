@@ -148,3 +148,47 @@ export async function cancelEvent(authorAndEventId) {
 
   await redis.json.set(key, path, true);
 }
+
+export async function getAllUserKeys() {
+  const keys = [];
+  let cursor = 0;
+
+  debug(`scan match ${dbNamespace}:user:*`);
+
+  do {
+    let results;
+    [cursor, ...results] = await redis.scan(cursor, { match: `${dbNamespace}:user:*` });
+    keys.push(...results.flat());
+  } while (cursor > 0);
+
+  return keys;
+}
+
+export async function getExpiredEvents(users) {
+  const yesterday = Date.now() - (24 * 60 * 60 * 1000);
+
+  if (!users.length) {
+    return [];
+  }
+
+  const results = await redis.json.mget(users, `$.events[?(@.date<${yesterday})]`);
+  return results.flat().filter(it => !!it);
+}
+
+export async function getCanceledEventIds(users) {
+  if (!users.length) {
+    return [];
+  }
+
+  const results = await redis.json.mget(users, `$.events[?(@.canceled==true)].id`);
+  return results.flat().filter(it => !!it);
+}
+
+export async function deleteEvents(userId, eventIds) {
+  await Promise.all(eventIds.map(eventId => {
+    const key = `${dbNamespace}:user:${userId}`;
+    const path = `$.events.${eventId}`;
+
+    return redis.json.del(key, path);
+  }));
+}

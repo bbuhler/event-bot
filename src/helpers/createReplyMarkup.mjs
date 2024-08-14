@@ -1,6 +1,6 @@
 import { Markup } from 'telegraf';
 
-export default function createReplyMarkup(ctx, event, creatorMessageId) {
+export default function createReplyMarkup(i18n, event, creatorMessageId) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -11,19 +11,19 @@ export default function createReplyMarkup(ctx, event, creatorMessageId) {
   if (creatorMessageId) {
     return Markup.inlineKeyboard([
       [
-        Markup.button.callback(ctx.i18n.action.add.button, `add:${event.id}:${creatorMessageId}`),
-        Markup.button.callback(ctx.i18n.action.remove.button, `remove:${event.id}:${creatorMessageId}`),
+        Markup.button.callback(i18n.action.add.button, `add:${event.id}:${creatorMessageId}`),
+        Markup.button.callback(i18n.action.remove.button, `remove:${event.id}:${creatorMessageId}`),
       ],
       [
-        Markup.button.callback(ctx.i18n.action.reschedule.button, `reschedule:${event.id}:${creatorMessageId}`),
-        Markup.button.callback(ctx.i18n.action.cancel.button, `cancel:${event.id}:${creatorMessageId}`),
+        Markup.button.callback(i18n.action.reschedule.button, `reschedule:${event.id}:${creatorMessageId}`),
+        Markup.button.callback(i18n.action.cancel.button, `cancel:${event.id}:${creatorMessageId}`),
       ],
-      [Markup.button.switchToChat(ctx.i18n.action.share.button, event.id)],
+      [Markup.button.switchToChat(i18n.action.share.button, event.id)],
     ]);
   }
 
   return Markup.inlineKeyboard([
-    Markup.button.callback(ctx.i18n.action.rsvp.participate.button, `rsvp:${event.id}:1`),
-    Markup.button.callback(ctx.i18n.action.rsvp.withdraw.button, `rsvp:${event.id}:0`),
+    Markup.button.callback(i18n.action.rsvp.participate.button, `rsvp:${event.id}:1`),
+    Markup.button.callback(i18n.action.rsvp.withdraw.button, `rsvp:${event.id}:0`),
   ]);
 }

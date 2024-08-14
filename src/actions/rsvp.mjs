@@ -1,5 +1,5 @@
 import * as db from '../db.mjs';
-import updateSubscribers from '../helpers/updateSubscribers.mjs';
+import { updateSubscribersById } from '../helpers/updateSubscribers.mjs';
 import { bulbEmoji } from '../helpers/emoji.mjs';
 import createDebug from '../helpers/debug.mjs';
 import { getParticipantName } from '../helpers/message-formater.mjs';
@@ -26,7 +26,7 @@ export function rsvpAction() {
       debug(`removed participant: ${from.first_name} (${from.id})`);
     }
 
-    const authorSubscriber = await updateSubscribers(ctx, authorAndEventId);
+    const authorSubscriber = await updateSubscribersById(ctx, authorAndEventId);
 
     if (addedNewly || removedCompletely) {
       await ctx.telegram.sendMessage(authorSubscriber.chatId, ctx.i18n.action.rsvp[response === '1' ? 'participate' : 'withdraw'].notify(getParticipantName(from), from), {

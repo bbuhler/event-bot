@@ -1,6 +1,6 @@
 import { Markup, Scenes } from 'telegraf';
 import * as db from '../db.mjs';
-import updateSubscribers from '../helpers/updateSubscribers.mjs';
+import { updateSubscribersById } from '../helpers/updateSubscribers.mjs';
 import { getParticipantName } from '../helpers/message-formater.mjs';
 import createDebug from '../helpers/debug.mjs';
 
@@ -48,7 +48,7 @@ export function removeParticipantWizard() {
         const result = await db.removeEventParticipant(authorAndEventId, participant.id);
         debug(`[${authorAndEventId}] Removed participant (completely=${result})`);
 
-        await updateSubscribers(ctx, authorAndEventId);
+        await updateSubscribersById(ctx, authorAndEventId);
         debug(`[${authorAndEventId}] Updated subscribers`);
 
         await ctx.reply(ctx.i18n.wizard.removeParticipant.reply(participant.name, parseInt(participant.id)), {

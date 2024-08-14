@@ -1,6 +1,6 @@
 import { Markup, Scenes } from 'telegraf';
 import * as db from '../db.mjs';
-import updateSubscribers from '../helpers/updateSubscribers.mjs';
+import { updateSubscribersById } from '../helpers/updateSubscribers.mjs';
 import createDebug from '../helpers/debug.mjs';
 
 const debug = createDebug('bot:cancel_wizard');
@@ -51,7 +51,7 @@ export function cancelEventWizard() {
         await db.cancelEvent(authorAndEventId);
         debug(`[${authorAndEventId}] Canceled event`);
 
-        await updateSubscribers(ctx, authorAndEventId);
+        await updateSubscribersById(ctx, authorAndEventId);
         debug(`[${authorAndEventId}] Updated subscribers`);
 
         await ctx.unpinChatMessage(eventMessageId);

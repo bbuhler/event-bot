@@ -1,7 +1,7 @@
 import { Markup, Scenes } from 'telegraf';
 import getContactsFromMsg from '../helpers/getContactFromMsg.mjs';
 import * as db from '../db.mjs';
-import updateSubscribers from '../helpers/updateSubscribers.mjs';
+import { updateSubscribersById } from '../helpers/updateSubscribers.mjs';
 import { getParticipantName } from '../helpers/message-formater.mjs';
 import createDebug from '../helpers/debug.mjs';
 
@@ -57,7 +57,7 @@ export function addParticipantWizard() {
         await db.addEventParticipant(authorAndEventId, contact);
         debug(`[${authorAndEventId}] Added contact to event`);
 
-        await updateSubscribers(ctx, authorAndEventId);
+        await updateSubscribersById(ctx, authorAndEventId);
         debug(`[${authorAndEventId}] Updated subscribers`);
 
         await ctx.reply(ctx.i18n.wizard.addParticipant.reply(getParticipantName(contact), parseInt(contact.id)), {

@@ -21,7 +21,7 @@ export function inlineQuery() {
 
     const events = (await getEventsFromInlineQuery(ctx.update.inline_query))
       .map(event => {
-        const message = createEventMessage(ctx, event);
+        const message = createEventMessage(ctx.i18n, event);
 
         return {
           type: 'article',
@@ -33,7 +33,7 @@ export function inlineQuery() {
             entities: message.entities,
             link_preview_options: { is_disabled: true },
           },
-          ...createReplyMarkup(ctx, event),
+          ...createReplyMarkup(ctx.i18n, event),
         };
       });
 
