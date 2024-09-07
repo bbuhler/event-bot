@@ -64,6 +64,12 @@ bot.action(/remove:(?<authorId>.+):(?<eventId>.+):(?<messageId>.+)/, removeParti
 bot.action(/cancel:(?<authorId>.+):(?<eventId>.+):(?<messageId>.+)/, cancelAction());
 bot.action(/reschedule:(?<authorId>.+):(?<eventId>.+):(?<messageId>.+)/, rescheduleAction());
 
+bot.catch(err => {
+  Sentry.captureException(err);
+  console.error(err);
+  throw err;
+});
+
 stage.register(createEventWizard(bot));
 stage.register(addParticipantWizard());
 stage.register(removeParticipantWizard());

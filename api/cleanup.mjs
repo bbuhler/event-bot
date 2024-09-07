@@ -1,6 +1,7 @@
 import '../src/sentry.mjs';
 
 import { Telegraf } from 'telegraf';
+import * as Sentry from '@sentry/node';
 
 import * as db from '../src/db.mjs';
 import { updateSubscribers } from '../src/helpers/updateSubscribers.mjs';
@@ -37,9 +38,8 @@ export default async function handle(req, res) {
 
     res.status(204).send();
   } catch (err) {
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'text/html');
-    res.end('<h1>Server Error</h1><p>Sorry, there was a problem</p>');
+    Sentry.captureException(err);
     console.error(err.message);
+    res.status(500).send();
   }
 }
